@@ -2,25 +2,25 @@
 
 namespace App\Entity;
 
-use App\Repository\CompanyUserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity]
-class CompanyUser
+class CompanyUser extends User
 {
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $adminLevel;
+    use TimestampableEntity;
 
-    public function getAdminLevel(): ?string
+    #[ORM\Column(nullable: true)]
+    private ?string $companyName = null;
+
+    public function getCompanyName(): ?string
     {
-        return $this->adminLevel;
+        return $this->companyName;
     }
 
-    public function setAdminLevel(string $adminLevel): self
+    public function setCompanyName(string $companyName): self
     {
-        $this->adminLevel = $adminLevel;
+        $this->companyName = $companyName;
         return $this;
     }
 

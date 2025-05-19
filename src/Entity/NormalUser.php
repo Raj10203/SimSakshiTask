@@ -2,23 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\NormalUserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity]
 class NormalUser extends User
 {
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isPremium;
+    use TimestampableEntity;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isPremium = null;
 
     public function isPremium(): ?bool
     {
         return $this->isPremium;
     }
 
-    public function setPremium(bool $isPremium): self
+    public function setIsPremium(bool $isPremium): self
     {
         $this->isPremium = $isPremium;
         return $this;

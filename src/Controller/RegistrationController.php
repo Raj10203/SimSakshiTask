@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\CompanyUser;
+use App\Entity\NormalUser;
 use App\Entity\User;
 use App\Form\RegistrationForm;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,8 +21,16 @@ class RegistrationController extends AbstractController
                              UserPasswordHasherInterface $userPasswordHasher,
                              EntityManagerInterface      $entityManager): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationForm::class, $user);
+        if($type === 'company') {
+            $user = new CompanyUser();
+            $user->setRoles(['ROLE_COMPANY']);
+        } else {
+            $user = new NormalUser();
+            $user->setRoles(['ROLE_NON_COMPANY']);
+        }
+        $form = $this->createForm(RegistrationForm::class, $user, [
+            'type' => $type === 'company',
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -32,7 +42,6 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_login');
