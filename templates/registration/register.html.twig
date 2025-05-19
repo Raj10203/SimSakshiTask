@@ -7,19 +7,19 @@
 {% block body %}
     <div class="container d-flex justify-content-center mt-5 mb-5 align-items-center">
         <div class="w-50 ">
-            <h1>Register</h1>
+            <h1>{{ type }}</h1>
 
             {{ form_errors(registrationForm) }}
 
             {{ form_start(registrationForm) }}
-            {{ form_row(registrationForm.email) }}
-            {{ form_row(registrationForm.plainPassword, {
-                label: 'Password'
-            }) }}
-            {{ form_row(registrationForm.agreeTerms) }}
 
+            {% for field in registrationForm %}
+                <div class="form-group">
+                    {{ form_row(field) }}
+                </div>
+            {% endfor %}
             <button type="submit" class="btn btn-primary">Register</button>
+            {{ form_end(registrationForm) }}
         </div>
     </div>
-    {{ form_end(registrationForm) }}
 {% endblock %}
